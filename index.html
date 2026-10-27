@@ -231,19 +231,12 @@ tailwind.config = {
       </h2>
       <p class="text-lg text-bone-200/80 max-w-xl mx-auto mb-10">
         White-glove onboarding, founding-customer pricing, direct line to the build team.
-        Drop your work email &mdash; we&rsquo;ll be in touch within a business day.
+        Email us from your work address &mdash; we&rsquo;ll be in touch within a business day.
       </p>
-      <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault(); document.getElementById('ok').classList.remove('hidden'); document.getElementById('form').classList.add('hidden')" id="form">
-        <label class="sr-only" for="email">Work email</label>
-        <input id="email" type="email" required placeholder="you@company.com" class="flex-1 bg-ink-800 border border-white/10 text-bone-50 placeholder-bone-200/40 px-5 py-4 rounded-xl outline-none focus:border-violet-500 text-base min-h-[52px]">
-        <button type="submit" class="bg-violet-500 hover:bg-violet-600 text-bone-50 font-bold px-7 py-4 rounded-xl transition-colors inline-flex items-center justify-center gap-2 min-h-[52px]">
-          Request access
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </button>
-      </form>
-      <div id="ok" class="hidden bg-cyber-500/10 border border-cyber-500/30 text-cyber-400 rounded-xl px-6 py-4 max-w-lg mx-auto font-medium" role="status" aria-live="polite">
-        Thanks &mdash; you&rsquo;re on the list. We&rsquo;ll be in touch within one business day.
-      </div>
+      <a href="mailto:hello@abmengine.com?subject=Early%20access" class="bg-violet-500 hover:bg-violet-600 text-bone-50 font-bold px-7 py-4 rounded-xl transition-colors inline-flex items-center justify-center gap-2 min-h-[52px]">
+        Request access
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </section>
 
