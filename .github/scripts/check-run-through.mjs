@@ -1,5 +1,5 @@
 // Fails when a check step in a workflow job can be skipped by an earlier failure.
-// Every step except checkout must carry `if: ${{ !cancelled() }}` (or `always()`).
+// Every step except checkout and setup-node must carry `if: ${{ !cancelled() }}` (or `always()`).
 // Usage: node check-run-through.mjs <workflow.yml>...
 import { readFileSync } from 'node:fs';
 
@@ -7,6 +7,7 @@ const RUN_THROUGH = /^\s+if:\s*\$\{\{\s*(!cancelled\(\)|always\(\))\s*\}\}\s*$/;
 const STEP_START = /^(\s+)- (name|uses|run|id|if):/;
 
 let failures = 0;
+let checked = 0;
 for (const file of process.argv.slice(2)) {
   const lines = readFileSync(file, 'utf8').split('\n');
   const steps = [];
@@ -14,7 +15,7 @@ for (const file of process.argv.slice(2)) {
   let indent = null;
   for (const line of lines) {
     if (/^\s+steps:\s*$/.test(line)) { inSteps = true; indent = null; continue; }
-    if (!inSteps) continue;
+    if (!inSteps || /^\s*#/.test(line)) continue;
     const m = line.match(STEP_START);
     if (m && (indent === null || m[1].length === indent)) {
       indent = m[1].length;
@@ -31,7 +32,8 @@ for (const file of process.argv.slice(2)) {
   }
   for (const step of steps) {
     const name = (step.find((l) => /- name:|^\s+name:/.test(l)) || step[0]).replace(/.*name:\s*/, '').trim();
-    if (step.some((l) => /uses:\s*actions\/checkout@/.test(l))) continue;
+    if (step.some((l) => /uses:\s*actions\/(checkout|setup-node)@/.test(l))) continue;
+    checked++;
     // A step's `if:` sits at the step's own key indent.
     if (!step.some((l) => RUN_THROUGH.test(l) && l.search(/\S/) === indent + 2)) {
       console.error(`${file}: step "${name}" lacks if: \${{ !cancelled() }}`);
@@ -40,4 +42,4 @@ for (const file of process.argv.slice(2)) {
   }
 }
 if (failures) process.exit(1);
-console.log('every check step runs through earlier failures');
+console.log(`every check step runs through earlier failures (${checked} checked)`);
