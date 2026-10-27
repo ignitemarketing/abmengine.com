@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "build:css": "npx --yes tailwindcss@3.4.17 -i src/input.css -o style.css --minify"
+  }
+}
