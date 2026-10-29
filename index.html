@@ -212,12 +212,30 @@
       </h2>
       <p class="text-lg text-bone-200/80 max-w-xl mx-auto mb-10">
         White-glove onboarding, founding-customer pricing, direct line to the build team.
-        Email us from your work address &mdash; we&rsquo;ll be in touch within a business day.
+        Drop your work email &mdash; we&rsquo;ll be in touch within a business day.
       </p>
-      <a href="mailto:hello@abmengine.com?subject=Early%20access" class="bg-violet-500 hover:bg-violet-600 text-bone-50 font-bold px-7 py-4 rounded-xl transition-colors inline-flex items-center justify-center gap-2 min-h-[52px]">
-        Request access
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
+      <form id="waitlist-form" action="/api/forms/waitlist" method="post" class="max-w-lg mx-auto">
+        <input type="hidden" name="_redirect" value="/">
+        <div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+          <label for="company_website">Leave this field empty</label>
+          <input id="company_website" type="text" name="company_website" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <label class="sr-only" for="email">Work email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" class="flex-1 bg-ink-800 border border-white/10 text-bone-50 placeholder-bone-200/40 px-5 py-4 rounded-xl outline-none focus:border-violet-500 text-base min-h-[52px]">
+          <button type="submit" class="bg-violet-500 hover:bg-violet-600 text-bone-50 font-bold px-7 py-4 rounded-xl transition-colors inline-flex items-center justify-center gap-2 min-h-[52px]">
+            Request access
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="cf-turnstile mt-4 flex justify-center" data-sitekey="0x4AAAAAAFq84MSmEGx6J1Uv" data-theme="dark"></div>
+      </form>
+      <div id="form-sent" class="hidden bg-cyber-500/10 border border-cyber-500/30 text-cyber-400 rounded-xl px-6 py-4 max-w-lg mx-auto font-medium" role="status" aria-live="polite">
+        Thanks &mdash; you&rsquo;re on the list. We&rsquo;ll be in touch within one business day.
+      </div>
+      <div id="form-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl px-6 py-4 max-w-lg mx-auto font-medium" role="alert">
+        Sorry, that didn&rsquo;t go through. Please try again.
+      </div>
     </div>
   </section>
 
@@ -235,6 +253,17 @@
     <a href="mailto:hello@abmengine.com" class="text-sm text-bone-200/70 hover:text-violet-400 transition-colors font-mono">hello@abmengine.com</a>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var state = new URLSearchParams(location.search).get('form');
+    if (state !== 'sent' && state !== 'error') return;
+    document.getElementById('form-' + state).classList.remove('hidden');
+    if (state === 'sent') document.getElementById('waitlist-form').classList.add('hidden');
+    document.getElementById('waitlist').scrollIntoView();
+  })();
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 </body>
 </html>
