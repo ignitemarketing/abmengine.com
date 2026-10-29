@@ -3,6 +3,10 @@
 # then rename it to Content-Security-Policy. Drop https://cdn.tailwindcss.com and
 # 'unsafe-inline' from script-src once the page no longer uses the Tailwind Play CDN
 # or inline handlers. frame-ancestors is ignored in Report-Only; X-Frame-Options enforces it meanwhile.
+# Keep the *.pages.dev host and its preview subdomains out of search results.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Frame-Options: DENY
